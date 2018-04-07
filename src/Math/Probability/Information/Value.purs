@@ -27,10 +27,10 @@ expectedValueOfInformation ::
   DecisionRule choice result ->
   InvestigationAndDecisionTree finding choice result ->
   Tagged Value Number
-expectedValueOfInformation iso decide (MkInvestigationAndDecisionTree tree) = unsafeCoerce unit
+expectedValueOfInformation project decide (MkInvestigationAndDecisionTree tree) = unsafeCoerce unit
 
 evMax :: forall choice result. (result -> Tagged Value Number) -> DecisionRule choice result
-evMax iso choices = unsafeCoerce unit
+evMax project choices = unsafeCoerce unit
 
 data Failure finding choice result
   = MissingsChoices (NonEmpty (Map finding) (NonEmpty Array choice))

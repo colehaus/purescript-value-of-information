@@ -3,10 +3,12 @@ module Test.Main where
 import Prelude
 
 import Control.Monad.Eff (Eff)
-import Math.Probability.Information.Value (InvestigationAndDecisionTree)
-import Test.QuickCheck (arbitrary, Result)
+import Data.Functor.Tagged (tagged)
+import Math.Probability.Information.Value (InvestigationAndDecisionTree, evMax, expectedValueOfInformation)
+import Test.QuickCheck (Result, arbitrary)
 import Test.QuickCheck.Gen (Gen)
 import Test.Spec (describe, it)
+import Test.Spec.Assertions (shouldEqual)
 import Test.Spec.QuickCheck (QCRunnerEffects, quickCheck)
 import Test.Spec.Reporter.Console (consoleReporter)
 import Test.Spec.Runner (run)
@@ -21,6 +23,11 @@ main = run [consoleReporter] do
       quickCheck $ evoiChangeIffPositive <$> genStringNumBeforeAndAfterInfo
     it "produces less value for imperfect information than perfect information" do
       quickCheck $ evoiPerfectBest <$> genPerfectImperfectPair
+    it "works for trick coin" do
+      expectedValueOfInformation tagged (evMax tagged) coinScenario `shouldEqual` tagged 0.5
+
+coinScenario :: InvestigationAndDecisionTree String String Number
+coinScenario = unsafeCoerce unit
 
 genBeforeAndAfterInfo ::
   forall finding choice result.
