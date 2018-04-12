@@ -1,0 +1,7 @@
+{
+  "name": "purescript-value-of-information",
+  "version": "1.0.0",
+  "devDependencies": {
+    "big-integer": "^1.6.28"
+  }
+}
