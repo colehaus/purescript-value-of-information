@@ -107,7 +107,7 @@ coinScenario =
   lff
     [ Tuple
         (Tuple
-           "coins is double heads"
+           "coin is double heads"
            (lff
               [ Tuple "bet heads" (lff [Tuple i top, Tuple o bottom])
               , Tuple "bet tails" (lff [Tuple o top, Tuple i bottom])
@@ -115,7 +115,7 @@ coinScenario =
         (MkProb $ b 1 % b 2)
     , Tuple
         (Tuple
-           "coins is double tails"
+           "coin is double tails"
            (lff
               [ Tuple "bet heads" (lff [Tuple i bottom, Tuple o top])
               , Tuple "bet tails" (lff [Tuple o bottom, Tuple i top])

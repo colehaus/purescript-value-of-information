@@ -1,13 +1,8 @@
 let
-  pkgs = import ./pinned-pkgs.nix ./nixpkgs.json {};
+  extras = import ./extras.nix;
+  pkgs = extras.pinnedPkgs {
+    specFile = ./nixpkgs.json;
+    opts = {};
+  };
 in
-  pkgs.stdenv.mkDerivation {
-    name = "env";
-    buildInputs = [
-      pkgs.git
-      pkgs.nodejs
-      pkgs.nodePackages.bower
-      pkgs.nodePackages.pulp
-      pkgs.purescript
-    ];
-  }
+  extras.purescriptDevEnv { inherit pkgs; }
