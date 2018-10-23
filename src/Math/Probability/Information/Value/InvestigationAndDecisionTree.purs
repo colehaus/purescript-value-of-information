@@ -11,8 +11,7 @@ import Data.Either.Extras (unzipEithers)
 import Data.List (List)
 import Data.Map (Map)
 import Data.Map as Map
-import Data.Map.Extras as Map
-import Data.Map.Extras2 as Map
+import Data.Map.Extras2 (unionsWith) as Map
 import Data.Maybe (Maybe, maybe)
 import Data.NonEmpty (NonEmpty, fromNonEmpty)
 import Data.NonEmpty.Extras (hmap)
@@ -106,7 +105,7 @@ validateFindings =
   asList <<< Set.toUnfoldable <<< fromNonEmpty Set.insert <<< Dist.values
   where
     asList :: forall a. List a -> List a
-    asList = id
+    asList = identity
 
 validateChoices ::
      forall finding choice result prob.
@@ -198,12 +197,12 @@ skeleton' ::
   -> Skeleton finding choice result
 skeleton' f =
   -- TODO: Clean up once `instance Ord1 Set` lands
-  Indexed.index id (Map.fromFoldableWith f) <<<
+  Indexed.index identity (Map.fromFoldableWith f) <<<
   map (second SDT.skeleton) <<<
   hmap (asList <<< Set.toUnfoldable) <<< Dist.values
   where
     asList :: forall a. List a -> List a
-    asList = id
+    asList = identity
 
 skeleton ::
      forall finding choice result prob.
@@ -246,7 +245,7 @@ fromElementary =
   note EmptyFindings <<<
   nonEmptyMap <<<
   Map.fromFoldable <=<
-  lmap (SimpleDecisionTreeFailures <<< index id Map.fromFoldable) <<<
+  lmap (SimpleDecisionTreeFailures <<< index identity Map.fromFoldable) <<<
   unzipEithers <<< map sdtFromElementary
   where
     sdtFromElementary (Tuple (Tuple finding l) prob) =

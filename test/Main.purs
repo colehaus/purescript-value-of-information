@@ -2,7 +2,6 @@ module Test.Main where
 
 import Prelude
 
-import Control.Monad.Eff (Eff)
 import Data.BigInt (BigInt)
 import Data.Functor.Tagged (Tagged, tagged, untagged)
 import Data.List as List
@@ -11,11 +10,12 @@ import Data.NonEmpty.Indexed as Indexed
 import Data.Ratio (Ratio, (%))
 import Data.Set as Set
 import Data.Tuple (Tuple(Tuple))
+import Effect (Effect)
 import Math.Probability.Prob.BigInt (Prob(..))
 import Test.QuickCheck (Result, (===), (>=?), (>?))
 import Test.Spec (describe, it)
 import Test.Spec.Assertions (shouldEqual)
-import Test.Spec.QuickCheck (QCRunnerEffects, quickCheck)
+import Test.Spec.QuickCheck (quickCheck)
 import Test.Spec.Reporter.Console (consoleReporter)
 import Test.Spec.Runner (run)
 
@@ -54,7 +54,7 @@ evMaxValue' = evMaxValue probToValue
 probToValue :: Prob -> Tagged Value Outcome
 probToValue (MkProb p) = tagged p
 
-main :: Eff (QCRunnerEffects ()) Unit
+main :: Effect Unit
 main = do
   run [consoleReporter] do
     describe "expectedValueOfInformation" do
@@ -75,7 +75,7 @@ voi ::
   => Ord choice
   => InvestigationAndDecisionTree Prob finding choice Outcome
   -> Rational
-voi = untagged <<< valueOfInformation tagged (evMaxDecide tagged probToValue) (evMaxValue probToValue)
+voi = untagged <<< valueOfInformation tagged evMaxDecide' evMaxValue'
 
 evoiNonNeg :: InvestigationAndDecisionTree Prob String String Outcome -> Result
 evoiNonNeg tree = voi tree >=? (b 0 % b 1)

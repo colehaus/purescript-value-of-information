@@ -116,11 +116,11 @@ evMaxDecide projectResult projectProb =
   maximum <<<
   map swap <<<
   asList <<<
-  deindex id Map.toUnfoldable <<<
+  deindex identity Map.toUnfoldable <<<
   map (evMaxValue projectProb <<< map projectResult) <<< SDT.unmake
   where
     asList :: forall a. NonEmpty List a -> NonEmpty List a
-    asList = id
+    asList = identity
 
 evMaxValue ::
      forall prob n.

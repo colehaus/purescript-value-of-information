@@ -20,6 +20,7 @@ import Data.NonEmpty.Indexed as Indexed
 import Data.Ratio (Ratio, (%))
 import Data.Set (Set)
 import Data.Set as Set
+import Data.String.NonEmpty as NonEmpty
 import Data.Traversable (traverse)
 import Data.Tuple (Tuple(Tuple))
 import Data.Unfoldable (range)
@@ -28,7 +29,6 @@ import Math.Probability.Dist.Internal (Dist)
 import Math.Probability.Prob.BigInt (Prob(..))
 import Partial.Unsafe (unsafeCrashWith)
 import Test.QuickCheck (arbitrary)
-import Test.QuickCheck.Data.AlphaNumString (AlphaNumString(..))
 import Test.QuickCheck.Gen (Gen)
 import Test.QuickCheck.Gen as Gen
 
@@ -79,13 +79,13 @@ genInvestigationAndDecisionTree genFinding genChoice genResult genProb = do
     genInvestigationAndDecisionTreeSkeleton genFinding genChoice genResult
   sdts <- traverse (genSimpleDecisionTree genProb) idtSkeleton
   idt <-
-    genDist genProb (deindex id (Set.fromFoldable <<< asList <<< Map.toUnfoldable) sdts)
+    genDist genProb (deindex identity (Set.fromFoldable <<< asList <<< Map.toUnfoldable) sdts)
   pure <<<
-    either (unsafeCrashWith <<< show <<< Tuple idt) id <<< IDT.make $
+    either (unsafeCrashWith <<< show <<< Tuple idt) identity <<< IDT.make $
     idt
   where
     asList :: forall a. List a -> List a
-    asList = id
+    asList = identity
 
 genInvestigationAndDecisionTreeSkeleton ::
      forall finding choice result.
@@ -157,8 +157,8 @@ genDist genProb results = do
 genStringNumTree :: Gen (InvestigationAndDecisionTree Prob String String Outcome)
 genStringNumTree =
   genInvestigationAndDecisionTree
-    (un AlphaNumString <$> arbitrary)
-    (un AlphaNumString <$> arbitrary)
+    (NonEmpty.toString <$> arbitrary)
+    (NonEmpty.toString <$> arbitrary)
     genResult
     genProb
 

@@ -145,7 +145,7 @@ choices ::
 choices =
   nonEmptyToSet <<<
   unsafeNonEmptyBecause reason <<<
-  Map.keys <<< Indexed.fromNonEmpty Map.insert <<< unmake
+  Set.toUnfoldable <<< Map.keys <<< Indexed.fromNonEmpty Map.insert <<< unmake
   where
     reason = "`SDT` cannot be empty"
 

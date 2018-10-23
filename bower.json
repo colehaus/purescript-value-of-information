@@ -9,17 +9,17 @@
     "result"
   ],
   "dependencies": {
-    "purescript-nonempty": "^4.2.0",
-    "purescript-orders": "^3.0.0",
-    "purescript-prelude": "^3.2.0",
-    "purescript-probability": "^4.0.2",
-    "purescript-sets": "^3.1.0",
-    "purescript-tagged": "^2.0.0"
+    "purescript-nonempty": "^5.0.0",
+    "purescript-ordered-collections": "^1.4.0",
+    "purescript-orders": "^4.0.0",
+    "purescript-prelude": "^4.1.0",
+    "purescript-probability": "^5.0.0",
+    "purescript-tagged": "^3.0.0"
   },
   "devDependencies": {
-    "purescript-psci-support": "^3.0.0",
-    "purescript-spec": "^2.0.0",
-    "purescript-spec-quickcheck": "^2.0.0"
+    "purescript-psci-support": "^4.0.0",
+    "purescript-spec": "^3.0.0",
+    "purescript-spec-quickcheck": "^3.0.0"
   },
   "repository": {
       "type": "git",
